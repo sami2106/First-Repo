@@ -1,0 +1,30 @@
+schemaVersion: 2.1.0
+metadata:
+  name: python-ext-sa
+projects:
+  - name: python-cuda
+    zip:
+      location: 'https://linux91.local:8441/repository/files/files/extensions.zip'
+      #location: 'https://bmf-kiss-gui.cloud.itz.in.bund.de/nexus/repository/devfiles/devspaces/python-cuda/python-cuda.zip
+components:
+  - name: python
+    container:
+      #image: craas-mvp.bcsv.cloud.intranet.bund.de/bmf-kiss/python-devspaces:latest
+      image: docker.io/sami2106/my-image-py:latest
+      volumeMounts:
+        - name: venv
+          path: /home/user/.venv
+      memoryLimit: 2G
+      mountSources: true
+  - name: venv
+    volume:
+      size: 1G
+commands:
+  - id: run
+    exec:
+      label: "Run the application"
+      component: python
+      workingDir: ${PROJECTS_ROOT}/python
+      commandLine: python -m venv .venv && . .venv/bin/activate 
+      group:
+        kind: run
